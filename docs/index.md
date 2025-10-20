@@ -1,5 +1,4 @@
-# Vala Documentation
-
+# Vala Documen
 ## Introduction
 
 Vala is a programming language using modern high level abstractions
@@ -38,3 +37,47 @@ uses where native binaries are required.
 ## Contribute
 
 - [View the source code of this documentation](https://github.com/vala-lang/vala-docs)
+
+- apt install libgtk-3-dev valac meson 
+using Gtk;
+int main (string[] args) {
+    Gtk.init (ref args);
+    var window = new Window ();
+    window.destroy.connect (Gtk.main_quit);
+    window.show_all ();
+    Gtk.main ();
+    return 0;
+
+}
+Desktop Entry]
+Name=uygulama-ornek
+Comment=Example application
+Exec=uygulama-ornek
+Terminal=false
+Type=Application
+Icon=uygulama-ornek
+Categories=System;
+Keywords=uygulama,ornek
+valac -o main main.vala --pkg gtk+-3.0
+# veya şu şekilde de yapılabilir.
+valac -C main.vala --pkg gtk+-3.0
+gcc -c main.o main.c `pkg-config --cflags gtk+-3.0`
+gcc -o main main.o `pkg-config --libs gtk+-3.0`
+deps = [
+    dependency('gtk+-3.0'),
+]
+executable('uygulama-ornek', sources, dependencies: deps, install: true)
+# uygulama simgesi
+install_data('icon.svg', install_dir: get_option('prefix') / 'share/icons/hicolor/scalable/apps/',rename: 'uygulama-ornek.svg')
+# uygulama başlatıcısı
+install_data('application.desktop', install_dir: get_option('prefix') / 'share/applications/',rename: 'org.uygulama.ornek.desktop')
+project('uygulama-ornek', 'vala', 'c')
+sources =  [
+    'main.vala',
+]
+deps = [
+    dependency('gtk+-3.0'),
+]
+executable('uygulama-ornek', sources, dependencies: deps, install: true)
+install_data('icon.svg', install_dir: get_option('prefix') / 'share/icons/hicolor/scalable/apps/')
+install_data('application.desktop', install_dir: get_option('prefix') / 'share/applications/',rename: 'org.uygulama.ornek.desktop')
